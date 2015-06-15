@@ -68,13 +68,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)defaultConfig {
-    
     self.manager = [AFHTTPRequestOperationManager manager];
-    
-    // 设置回复内容信息
-    self.manager.responseSerializer.acceptableContentTypes = \
-        [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-
 }
 
 
@@ -94,8 +88,12 @@ typedef enum : NSUInteger {
     // 设置回复类型
     if (self.responseType) {
         self.manager.responseSerializer = [Networking responseSerializerWith:self.responseType];
+        self.manager.responseSerializer.acceptableContentTypes = \
+            [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     } else {
         self.manager.responseSerializer = [Networking responseSerializerWith:HTTPResponseType];
+        self.manager.responseSerializer.acceptableContentTypes = \
+            [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     }
     
     // 设置超时时间
@@ -232,5 +230,105 @@ typedef enum : NSUInteger {
     
     return networking;
 }
+
++ (AFHTTPRequestOperation *)GET:(NSString *)URLString
+                     parameters:(id)parameters
+                timeoutInterval:(NSNumber *)timeInterval
+                    requestType:(AFNetworkingRequestType)requestType
+                   responseType:(AFNetworkingResponseType)responseType
+                        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    
+    AFHTTPRequestOperationManager *manager            = [AFHTTPRequestOperationManager manager];
+    
+    
+    // 设置请求类型
+    manager.requestSerializer                         = [Networking requestSerializerWith:requestType];
+    
+    
+    // 设置回复类型
+    manager.responseSerializer                        = [Networking responseSerializerWith:responseType];
+    
+    
+    // 设置回复内容信息
+    manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    
+    // 设置超时时间
+    if (timeInterval) {
+        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+        manager.requestSerializer.timeoutInterval = timeInterval.floatValue;
+        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    }
+    
+    
+    AFHTTPRequestOperation *httpOperation = [manager GET:URLString
+                                              parameters:parameters
+                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                     if (success) {
+                                                         success(operation, responseObject);
+                                                     }
+                                                 }
+                                                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                     if (failure) {
+                                                         failure(operation, error);
+                                                     }
+                                                 }];
+    
+    
+    return httpOperation;
+}
+
+
++ (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                 timeoutInterval:(NSNumber *)timeInterval
+                     requestType:(AFNetworkingRequestType)requestType
+                    responseType:(AFNetworkingResponseType)responseType
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    
+    AFHTTPRequestOperationManager *manager            = [AFHTTPRequestOperationManager manager];
+    
+    
+    // 设置请求类型
+    manager.requestSerializer                         = [Networking requestSerializerWith:requestType];
+    
+    
+    // 设置回复类型
+    manager.responseSerializer                        = [Networking responseSerializerWith:responseType];
+    
+    
+    // 设置回复内容信息
+    manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    
+    // 设置超时时间
+    if (timeInterval) {
+        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+        manager.requestSerializer.timeoutInterval = timeInterval.floatValue;
+        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    }
+    
+    
+    AFHTTPRequestOperation *httpOperation = [manager POST:URLString
+                                               parameters:parameters
+                                                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                      if (success) {
+                                                          success(operation, responseObject);
+                                                      }
+                                                  }
+                                                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                      if (failure) {
+                                                          failure(operation, error);
+                                                      }
+                                                  }];
+    
+    
+    return httpOperation;
+}
+
 
 @end

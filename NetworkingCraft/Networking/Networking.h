@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AFNetworking.h"
 @class Networking;
 
 
@@ -162,5 +163,51 @@ typedef enum : NSUInteger {
                           requestMethod:(AFNetworkingRequestMethod)requestMethod
                             requestType:(AFNetworkingRequestType)requestType
                            responseType:(AFNetworkingResponseType)responseType;
+
+#pragma mark - block的形式请求
+
+/**
+ *  AFNetworking的GET请求
+ *
+ *  @param URLString    请求网址
+ *  @param parameters   网址参数
+ *  @param timeInterval 超时时间(可以设置为nil)
+ *  @param requestType  请求类型
+ *  @param responseType 返回结果类型
+ *  @param success      成功时调用的block
+ *  @param failure      失败时调用的block
+ *
+ *  @return 网络操作句柄
+ */
++ (AFHTTPRequestOperation *)GET:(NSString *)URLString
+                     parameters:(id)parameters
+                timeoutInterval:(NSNumber *)timeInterval
+                    requestType:(AFNetworkingRequestType)requestType
+                   responseType:(AFNetworkingResponseType)responseType
+                        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+
+/**
+ *  AFNetworking的POST请求
+ *
+ *  @param URLString    请求网址
+ *  @param parameters   网址参数
+ *  @param timeInterval 超时时间(可以设置为nil)
+ *  @param requestType  请求类型
+ *  @param responseType 返回结果类型
+ *  @param success      成功时调用的block
+ *  @param failure      失败时调用的block
+ *
+ *  @return 网络操作句柄
+ */
++ (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                 timeoutInterval:(NSNumber *)timeInterval
+                     requestType:(AFNetworkingRequestType)requestType
+                    responseType:(AFNetworkingResponseType)responseType
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
 
 @end
