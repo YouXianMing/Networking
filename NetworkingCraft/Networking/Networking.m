@@ -89,11 +89,11 @@ typedef enum : NSUInteger {
     if (self.responseType) {
         self.manager.responseSerializer = [Networking responseSerializerWith:self.responseType];
         self.manager.responseSerializer.acceptableContentTypes = \
-            [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+        [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     } else {
         self.manager.responseSerializer = [Networking responseSerializerWith:HTTPResponseType];
         self.manager.responseSerializer.acceptableContentTypes = \
-            [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+        [self.manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     }
     
     // 设置超时时间
@@ -102,7 +102,7 @@ typedef enum : NSUInteger {
         self.manager.requestSerializer.timeoutInterval = self.timeoutInterval.floatValue;
         [self.manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     }
-
+    
     // 开始执行请求
     if (self.RequestMethod == GET_METHOD) {
         
@@ -132,7 +132,7 @@ typedef enum : NSUInteger {
                                        }];
         
     } else if (self.RequestMethod == POST_METHOD) {
-    
+        
         __weak Networking *weakSelf = self;
         self.httpOperation = [self.manager POST:self.urlString
                                      parameters:[weakSelf transformRequestDictionary]
@@ -158,8 +158,67 @@ typedef enum : NSUInteger {
                                             
                                         }];
         
-    } else {
-    
+    } else if (self.RequestMethod == UPLOAD_DATA) {
+        
+        if (self.constructingBodyBlock) {
+            __weak Networking *weakSelf = self;
+            self.httpOperation = [self.manager POST:self.urlString
+                                         parameters:[weakSelf transformRequestDictionary]
+                          constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                              
+                              weakSelf.constructingBodyBlock(formData);
+                              
+                          }
+                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                
+                                                if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
+                                                    [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
+                                                }
+                                                
+                                            }
+                                            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                
+                                                if (self.cancelType == USER_CANCEL) {
+                                                    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
+                                                        [weakSelf.delegate userCanceledFailed:weakSelf error:error];
+                                                        weakSelf.cancelType = DEALLOC_CANCEL;
+                                                    }
+                                                } else {
+                                                    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestFailed:error:)]) {
+                                                        [weakSelf.delegate requestFailed:weakSelf error:error];
+                                                    }
+                                                }
+                                                
+                                            }];
+        } else {
+            
+            __weak Networking *weakSelf = self;
+            self.httpOperation = [self.manager POST:self.urlString
+                                         parameters:[weakSelf transformRequestDictionary]
+                          constructingBodyWithBlock:nil
+                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                
+                                                if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
+                                                    [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
+                                                }
+                                                
+                                            }
+                                            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                
+                                                if (self.cancelType == USER_CANCEL) {
+                                                    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
+                                                        [weakSelf.delegate userCanceledFailed:weakSelf error:error];
+                                                        weakSelf.cancelType = DEALLOC_CANCEL;
+                                                    }
+                                                } else {
+                                                    if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestFailed:error:)]) {
+                                                        [weakSelf.delegate requestFailed:weakSelf error:error];
+                                                    }
+                                                }
+                                                
+                                            }];
+        }
+        
     }
 }
 
@@ -329,6 +388,61 @@ typedef enum : NSUInteger {
     
     return httpOperation;
 }
+
+
++ (AFHTTPRequestOperation *)UploadDataWithUrlString:(NSString *)URLString
+                                         parameters:(id)parameters
+                                    timeoutInterval:(NSNumber *)timeInterval
+                                        requestType:(AFNetworkingRequestType)requestType
+                                       responseType:(AFNetworkingResponseType)responseType
+                          constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                                            success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                                            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    
+    AFHTTPRequestOperationManager *manager            = [AFHTTPRequestOperationManager manager];
+    
+    
+    // 设置请求类型
+    manager.requestSerializer                         = [Networking requestSerializerWith:requestType];
+    
+    
+    // 设置回复类型
+    manager.responseSerializer                        = [Networking responseSerializerWith:responseType];
+    
+    
+    // 设置回复内容信息
+    manager.responseSerializer.acceptableContentTypes = [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    
+    
+    // 设置超时时间
+    if (timeInterval) {
+        [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
+        manager.requestSerializer.timeoutInterval = timeInterval.floatValue;
+        [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
+    }
+    
+    
+    AFHTTPRequestOperation *httpOperation = [manager POST:URLString
+                                               parameters:parameters
+                                constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                    if (block) {
+                                        block(formData);
+                                    }
+                                } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                    if (success) {
+                                        success(operation, responseObject);
+                                    }
+                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                    if (failure) {
+                                        failure(operation, error);
+                                    }
+                                }];
+    
+    
+    return httpOperation;
+}
+
 
 
 @end

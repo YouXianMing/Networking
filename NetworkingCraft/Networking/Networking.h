@@ -11,10 +11,14 @@
 @class Networking;
 
 
+typedef void(^ConstructingBodyBlock)(id<AFMultipartFormData> formData);
+
+
 typedef enum : NSUInteger {
     
     GET_METHOD,                  // GET请求
     POST_METHOD,                 // POST请求
+    UPLOAD_DATA,                 // 上传文件的请求(POST请求)
     
 } AFNetworkingRequestMethod;
 
@@ -108,6 +112,11 @@ typedef enum : NSUInteger {
  *  作为请求用字典
  */
 @property (nonatomic, strong) NSDictionary           *requestDictionary;
+
+/**
+ *  构造数据用block(用于UPLOAD_DATA方法)
+ */
+@property (nonatomic, copy)   ConstructingBodyBlock   constructingBodyBlock;
 
 /**
  *
@@ -208,6 +217,30 @@ typedef enum : NSUInteger {
                     responseType:(AFNetworkingResponseType)responseType
                          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+
+/**
+ *  上传文件(POST请求)
+ *
+ *  @param URLString    请求地址
+ *  @param parameters   网址参数
+ *  @param timeInterval 超时时间(可以设置为nil)
+ *  @param requestType  请求类型
+ *  @param responseType 返回结果类型
+ *  @param block        构造上传数据
+ *  @param success      成功时调用的block
+ *  @param failure      失败时调用的block
+ *
+ *  @return 网络操作句柄
+ */
++ (AFHTTPRequestOperation *)UploadDataWithUrlString:(NSString *)URLString
+                                         parameters:(id)parameters
+                                    timeoutInterval:(NSNumber *)timeInterval
+                                        requestType:(AFNetworkingRequestType)requestType
+                                       responseType:(AFNetworkingResponseType)responseType
+                          constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                                            success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                                            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 
 @end

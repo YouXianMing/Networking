@@ -45,6 +45,11 @@
 @property (nonatomic, weak) id <DownloadTaskDelegate>    delegate;
 
 /**
+ *  标识符
+ */
+@property (nonatomic, strong) NSString                  *flag;
+
+/**
  *  下载地址
  */
 @property (nonatomic, strong) NSString                  *urlString;
