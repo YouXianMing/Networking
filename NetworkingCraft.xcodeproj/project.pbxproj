@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		10C720CC1B2A30B4003FA2A1 /* DownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 10C720CB1B2A30B4003FA2A1 /* DownloadTask.m */; };
 		10D1D3261B3757A800B07CB1 /* demo.png in Resources */ = {isa = PBXBuildFile; fileRef = 10D1D3251B3757A800B07CB1 /* demo.png */; };
+		10D893C51B3A139500C9BD8A /* AFDownloadRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 10D893C41B3A139500C9BD8A /* AFDownloadRequestOperation.m */; };
 		10E233D41B291D7300AF2243 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E233D31B291D7300AF2243 /* main.m */; };
 		10E233D71B291D7300AF2243 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E233D61B291D7300AF2243 /* AppDelegate.m */; };
 		10E233DA1B291D7300AF2243 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E233D91B291D7300AF2243 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		10C720CA1B2A30B4003FA2A1 /* DownloadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadTask.h; sourceTree = "<group>"; };
 		10C720CB1B2A30B4003FA2A1 /* DownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadTask.m; sourceTree = "<group>"; };
 		10D1D3251B3757A800B07CB1 /* demo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = demo.png; sourceTree = "<group>"; };
+		10D893C31B3A139500C9BD8A /* AFDownloadRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDownloadRequestOperation.h; sourceTree = "<group>"; };
+		10D893C41B3A139500C9BD8A /* AFDownloadRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDownloadRequestOperation.m; sourceTree = "<group>"; };
 		10E233CE1B291D7300AF2243 /* NetworkingCraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetworkingCraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10E233D21B291D7300AF2243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		10E233D31B291D7300AF2243 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -251,6 +254,8 @@
 				10E234301B291E2E00AF2243 /* Networking.m */,
 				10C720CA1B2A30B4003FA2A1 /* DownloadTask.h */,
 				10C720CB1B2A30B4003FA2A1 /* DownloadTask.m */,
+				10D893C31B3A139500C9BD8A /* AFDownloadRequestOperation.h */,
+				10D893C41B3A139500C9BD8A /* AFDownloadRequestOperation.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -372,6 +377,7 @@
 				10E234211B291DF300AF2243 /* AFSecurityPolicy.m in Sources */,
 				10E2342C1B291DF300AF2243 /* UIRefreshControl+AFNetworking.m in Sources */,
 				10E2342D1B291DF300AF2243 /* UIWebView+AFNetworking.m in Sources */,
+				10D893C51B3A139500C9BD8A /* AFDownloadRequestOperation.m in Sources */,
 				10E2341F1B291DF300AF2243 /* AFHTTPSessionManager.m in Sources */,
 				10E234281B291DF300AF2243 /* UIAlertView+AFNetworking.m in Sources */,
 				10E234231B291DF300AF2243 /* AFURLRequestSerialization.m in Sources */,

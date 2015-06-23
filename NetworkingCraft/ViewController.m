@@ -11,7 +11,7 @@
 #import "AFNetworking.h"
 #import "WeatherNetwork.h"
 #import "DownloadTask.h"
-
+#import "AFDownloadRequestOperation.h"
 
 #define  UPLOAD_PIC_STR  @"UPLOAD_PIC_STR"
 #define  WEATHER_DATA    @"WEATHER_DATA"
@@ -31,17 +31,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     // 网络请求
     [self normalRequest];
     
-    
     // 下载任务
     [self downloadTaskRequest];
-    
-    
+
     // 上传图片
     [self uploadPictureRequest];
+    
+    // 断点续传
+    [self resumeDownload];
 }
 
 #pragma mark - 普通请求
@@ -53,6 +53,7 @@
     self.network.flag = WEATHER_DATA;
     [self.network startRequest];
 }
+
 
 #pragma mark - 上传图片
 - (void)uploadPictureRequest {
@@ -93,6 +94,21 @@
                                                        delegate:self];
     self.downloadTask.flag = DOWNLOAD_DATA;
     [self.downloadTask startDownload];
+}
+
+- (void)resumeDownload {
+    
+    NSLog(@"%@", [NSHomeDirectory() stringByAppendingPathComponent:nil]);
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://41.duote.com.cn/2345explorer.exe"]];
+    AFDownloadRequestOperation *operation = [[AFDownloadRequestOperation alloc] initWithRequest:request
+                                                                                 fileIdentifier:@"2345explorer.exe"
+                                                                                     targetPath:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Caches"]
+                                                                                   shouldResume:YES];
+    [operation start];
+    
+    [operation setProgressiveDownloadProgressBlock:^(AFDownloadRequestOperation *operation, NSInteger bytesRead, long long totalBytesRead, long long totalBytesExpected, long long totalBytesReadForFile, long long totalBytesExpectedToReadForFile) {
+        NSLog(@"%f", (float)totalBytesRead / (float)totalBytesExpected);
+    }];
 }
 
 #pragma mark - 代理方法
