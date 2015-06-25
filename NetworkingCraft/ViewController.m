@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "Networking.h"
 #import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 #import "WeatherNetwork.h"
 #import "DownloadTask.h"
 #import "AFDownloadRequestOperation.h"
@@ -32,17 +33,22 @@
     [super viewDidLoad];
     
     // 网络请求
-    [self normalRequest];
+//    [self normalRequest];
     
     // 下载任务
-    [self downloadTaskRequest];
+//    [self downloadTaskRequest];
 
     // 上传图片
-    [self uploadPictureRequest];
+//    [self uploadPictureRequest];
     
-    // 断点续传
-    [self resumeDownload];
+    // 断点下载
+//    [self resumeDownload];
+    
+    // 加载图片
+//    [self loadPicture];
 }
+
+#pragma mark ===========================================================
 
 #pragma mark - 普通请求
 - (void)normalRequest {
@@ -54,6 +60,15 @@
     [self.network startRequest];
 }
 
+#pragma mark - 下载任务
+- (void)downloadTaskRequest {
+    self.downloadTask = [DownloadTask downloadTaskWithUrlString:@"http://41.duote.com.cn/2345explorer.exe"
+                                                  fileDirectory:nil
+                                                       fileName:nil
+                                                       delegate:self];
+    self.downloadTask.flag = DOWNLOAD_DATA;
+    [self.downloadTask startDownload];
+}
 
 #pragma mark - 上传图片
 - (void)uploadPictureRequest {
@@ -86,16 +101,7 @@
     [self.uploadPic startRequest];
 }
 
-#pragma mark - 下载任务
-- (void)downloadTaskRequest {
-    self.downloadTask = [DownloadTask downloadTaskWithUrlString:@"http://41.duote.com.cn/2345explorer.exe"
-                                                  fileDirectory:nil
-                                                       fileName:nil
-                                                       delegate:self];
-    self.downloadTask.flag = DOWNLOAD_DATA;
-    [self.downloadTask startDownload];
-}
-
+#pragma mark - 断点下载
 - (void)resumeDownload {
     
     NSLog(@"%@", [NSHomeDirectory() stringByAppendingPathComponent:nil]);
@@ -110,6 +116,26 @@
         NSLog(@"%f", (float)totalBytesRead / (float)totalBytesExpected);
     }];
 }
+
+#pragma mark - 加载图片
+- (void)loadPicture {
+    
+    self.view.backgroundColor     = [UIColor blackColor];
+    
+    UIImageView *imageView        = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 400)];
+    imageView.layer.borderColor   = [UIColor whiteColor].CGColor;
+    imageView.layer.borderWidth   = 4.f;
+    imageView.layer.masksToBounds = YES;
+    imageView.contentMode         = UIViewContentModeScaleAspectFill;
+    imageView.center              = self.view.center;
+    [self.view addSubview:imageView];
+    
+    NSURL *url = [NSURL URLWithString:@"http://c.hiphotos.baidu.com/image/pic/item/f3d3572c11dfa9ec78e256df60d0f703908fc12e.jpg"];
+    
+    [imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"demo"]];
+}
+
+#pragma mark ===========================================================
 
 #pragma mark - 代理方法
 - (void)requestSucess:(Networking *)networking data:(id)data {
