@@ -5,6 +5,16 @@
 //  Created by YouXianMing on 15/6/11.
 //  Copyright (c) 2015年 YouXianMing. All rights reserved.
 //
+//  https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+//  https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+//
+//  = HTTP请求格式 =
+//  ------------------------------
+//  * 请求方法 (GET、POST等)       *
+//  * 请求头   (HttpHeaderFields) *
+//  * 请求正文 (数据)              *
+//  ------------------------------
+//
 
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
