@@ -119,9 +119,14 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString               *urlString;
 
 /**
- *  作为请求用字典
+ *  作为请求数据字典
  */
 @property (nonatomic, strong) NSDictionary           *requestDictionary;
+
+/**
+ *  设置请求头部信息用字典(字典均由字符串组成,字典的key为HTTPHeaderField,value为其对应的值)
+ */
+@property (nonatomic, strong) NSDictionary           *HTTPHeaderFieldsWithValues;
 
 /**
  *  构造数据用block(用于UPLOAD_DATA方法)

@@ -33,7 +33,7 @@
     [super viewDidLoad];
     
     // 网络请求
-//    [self normalRequest];
+    [self normalRequest];
     
     // 下载任务
 //    [self downloadTaskRequest];
@@ -56,6 +56,11 @@
                                               requestDictionary:@{@"lat" : @"39.907501",
                                                                   @"lon" : @"116.397232"}
                                                        delegate:self];
+    
+    // 设置请求头部信息
+    self.network.HTTPHeaderFieldsWithValues = @{@"User-Agent"      : @"NetworkingCraft/1.0 (YouXianMing; iOS 8.3; Scale/2.00)",
+                                                @"Accept-Language" : @"zh-Hans;q=0.7, zh-Hant;q=0.6, ja;q=0.5"};
+
     self.network.flag = WEATHER_DATA;
     [self.network startRequest];
 }
@@ -146,7 +151,8 @@
         
     } else if ([networking.flag isEqualToString:WEATHER_DATA]) {
         
-        NSLog(@"普通请求 %@", data);
+        WeatherModel *model = data;
+        NSLog(@"普通请求 %@", model.city);
         
     }
 }
