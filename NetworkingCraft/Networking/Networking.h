@@ -5,6 +5,16 @@
 //  Created by YouXianMing on 15/6/11.
 //  Copyright (c) 2015年 YouXianMing. All rights reserved.
 //
+//  https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+//  https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+//
+//  = HTTP请求格式 =
+//  ------------------------------
+//  * 请求方法 (GET、POST等)       *
+//  * 请求头   (HttpHeaderFields) *
+//  * 请求正文 (数据)              *
+//  ------------------------------
+//
 
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
@@ -116,9 +126,14 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString               *urlString;
 
 /**
- *  作为请求用字典
+ *  作为请求数据字典
  */
 @property (nonatomic, strong) NSDictionary           *requestDictionary;
+
+/**
+ *  设置请求头部信息用字典(字典均由字符串组成,字典的key为HTTPHeaderField,value为其对应的值)
+ */
+@property (nonatomic, strong) NSDictionary           *HTTPHeaderFieldsWithValues;
 
 /**
  *  构造数据用block(用于UPLOAD_DATA方法)

@@ -96,6 +96,18 @@ typedef enum : NSUInteger {
         self.manager.requestSerializer  = [Networking requestSerializerWith:HTTPRequestType];
     }
     
+    // 设置请求头部信息
+    if (self.HTTPHeaderFieldsWithValues) {
+        
+        NSArray *allKeys = self.HTTPHeaderFieldsWithValues.allKeys;
+        
+        for (NSString *headerField in allKeys) {
+            
+            NSString *value = [self.HTTPHeaderFieldsWithValues valueForKey:headerField];
+            [self.manager.requestSerializer setValue:value forHTTPHeaderField:headerField];
+        }
+    }
+    
     // 设置回复类型
     if (self.responseType) {
         self.manager.responseSerializer = [Networking responseSerializerWith:self.responseType];
