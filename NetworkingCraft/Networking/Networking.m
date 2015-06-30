@@ -17,6 +17,12 @@ typedef enum : NSUInteger {
     
 } ECancelType;
 
+/**
+ *  网络状态的监测 + 是否可以发送通知消息
+ */
+static AFHTTPRequestOperationManager *_managerReachability = nil;
+static BOOL                           _canSendMessage      = YES;
+
 @interface Networking ()
 
 #pragma mark - Private Instance
@@ -49,6 +55,11 @@ typedef enum : NSUInteger {
  */
 + (AFHTTPResponseSerializer *)responseSerializerWith:(AFNetworkingResponseType)serializerType;
 
+/**
+ *  初始化网络状态监测
+ */
++ (void)networkReachability;
+
 @end
 
 @implementation Networking
@@ -56,8 +67,84 @@ typedef enum : NSUInteger {
 + (void)initialize {
     if (self == [Networking class]) {
         
+        // 显示网络指示器
         [self showNetworkActivityIndicator:YES];
+        
+        // 初始化网络监测
+        [self networkReachability];
+        
+        // 开启网络监测
+        [self startMonitoring];
     }
+}
+
++ (void)networkReachability {
+    
+    NSURL *baseURL       = [NSURL URLWithString:reachabeBaseURL];
+    _managerReachability = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    
+    NSOperationQueue *operationQueue = _managerReachability.operationQueue;
+    [_managerReachability.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                [operationQueue setSuspended:NO];
+                
+                if (_canSendMessage == YES) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingReachability
+                                                                        object:nil
+                                                                      userInfo:@{@"networkReachable": NetworkingStatus_WWAN}];
+                }
+                
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [operationQueue setSuspended:NO];
+                
+                if (_canSendMessage == YES) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingReachability
+                                                                        object:nil
+                                                                      userInfo:@{@"networkReachable": NetworkingStatus_WIFI}];
+                }
+                
+                break;
+                
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                [operationQueue setSuspended:YES];
+                
+                if (_canSendMessage == YES) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingReachability
+                                                                        object:nil
+                                                                      userInfo:@{@"networkReachable": NetworkingStatus_NotReachable}];
+                }
+                
+                break;
+        }
+    }];
+    
+
+}
+
++ (void)startMonitoring {
+    _canSendMessage = YES;
+    [_managerReachability.reachabilityManager startMonitoring];
+}
+
++ (void)stopMonitoring {
+    _canSendMessage = NO;
+    [_managerReachability.reachabilityManager stopMonitoring];
+}
+
++ (BOOL)isReachable {
+    return _managerReachability.reachabilityManager.isReachable;
+}
+
++ (BOOL)isReachableViaWWAN {
+    return _managerReachability.reachabilityManager.isReachableViaWWAN;
+}
+
++ (BOOL)isReachableViaWiFi {
+    return _managerReachability.reachabilityManager.isReachableViaWiFi;
 }
 
 /**
@@ -278,6 +365,8 @@ typedef enum : NSUInteger {
         return [AFImageResponseSerializer serializer];
     } else if (serializerType == CompoundResponseType) {
         return [AFCompoundResponseSerializer serializer];
+    } else if (serializerType == XMLType) {
+        return [AFXMLParserResponseSerializer serializer];
     } else {
         return nil;
     }
@@ -465,7 +554,6 @@ typedef enum : NSUInteger {
     
     return httpOperation;
 }
-
 
 
 @end

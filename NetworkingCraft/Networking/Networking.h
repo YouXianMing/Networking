@@ -21,6 +21,24 @@
 @class Networking;
 
 
+/**
+ *  用于测试网络是否可以连接的基准URL地址
+ */
+static NSString *reachabeBaseURL               = @"http://baidu.com/";
+
+/**
+ *  提供给外部监听用,监测网络状态变化
+ */
+static NSString *NetworkingReachability        = @"_networkingReachability_";
+
+/**
+ *  外部接收通知用字符串
+ */
+static NSString *NetworkingStatus_WWAN         = @"_netStatus_WWAN_";
+static NSString *NetworkingStatus_WIFI         = @"_netStatus_WIFI_";
+static NSString *NetworkingStatus_NotReachable = @"_netStatus_NotReachable_";
+
+
 typedef void(^ConstructingBodyBlock)(id<AFMultipartFormData> formData);
 
 
@@ -35,8 +53,11 @@ typedef enum : NSUInteger {
 
 typedef enum : NSUInteger {
     
+    /*------ 常用 ------*/
     HTTPRequestType = 0x11,      // 二进制格式 (不设置的话为默认格式)
     JSONRequestType,             // JSON方式
+    /*-----------------*/
+    
     PlistRequestType,            // 集合文件方式
     
 } AFNetworkingRequestType;
@@ -44,10 +65,14 @@ typedef enum : NSUInteger {
 
 typedef enum : NSUInteger {
     
-    HTTPResponseType = 0x22,     // 二进制格式 (不设置的话为默认格式)
+    /*------ 常用 ------*/
+    HTTPResponseType = 0x33,     // 二进制格式 (不设置的话为默认格式)
     JSONResponseType,            // JSON方式
-    PlistResponseType,           // 集合文件方式
+    XMLType,                     // XML的方式
     ImageResponseType,           // 图片方式
+    /*-----------------*/
+    
+    PlistResponseType,           // 集合文件方式
     CompoundResponseType,        // 组合方式
     
 } AFNetworkingResponseType;
@@ -89,6 +114,37 @@ typedef enum : NSUInteger {
  *  @param show
  */
 + (void)showNetworkActivityIndicator:(BOOL)show;
+
+/**
+ *  开始网络监测(默认就是开启)
+ */
++ (void)startMonitoring;
+
+/**
+ *  停止网络监测
+ */
++ (void)stopMonitoring;
+
+/**
+ *  是否可以联网
+ *
+ *  @return YES为可以,NO为不行
+ */
++ (BOOL)isReachable;
+
+/**
+ *  当前是否是WWAN网络
+ *
+ *  @return YES为是,NO为不是
+ */
++ (BOOL)isReachableViaWWAN;
+
+/**
+ *  当前是否为WIFI网络
+ *
+ *  @return YES为是,NO为不是
+ */
++ (BOOL)isReachableViaWiFi;
 
 /**
  *  代理

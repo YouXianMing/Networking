@@ -46,9 +46,31 @@
     
     // 加载图片
 //    [self loadPicture];
+    
+    // 监听网络状态
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notificationEvent:)
+                                                 name:NetworkingReachability
+                                               object:nil];
 }
 
 #pragma mark ===========================================================
+
+- (void)notificationEvent:(id)sender {
+    NSLog(@"%@", sender);
+    
+    if ([Networking isReachable]) {
+        
+        if ([Networking isReachableViaWiFi]) {
+            NSLog(@"WIFI");
+        } else if ([Networking isReachableViaWWAN]) {
+            NSLog(@"WWAN");
+        }
+        
+    } else {
+        NSLog(@"网络有问题");
+    }
+}
 
 #pragma mark - 普通请求
 - (void)normalRequest {
