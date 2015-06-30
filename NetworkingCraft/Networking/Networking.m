@@ -8,6 +8,7 @@
 
 #import "Networking.h"
 #import "AFNetworking.h"
+#import "UIKit+AFNetworking.h"
 
 typedef enum : NSUInteger {
     
@@ -52,6 +53,13 @@ typedef enum : NSUInteger {
 
 @implementation Networking
 
++ (void)initialize {
+    if (self == [Networking class]) {
+        
+        [self showNetworkActivityIndicator:YES];
+    }
+}
+
 /**
  *  初始化方法
  *
@@ -71,6 +79,9 @@ typedef enum : NSUInteger {
     self.manager = [AFHTTPRequestOperationManager manager];
 }
 
++ (void)showNetworkActivityIndicator:(BOOL)show {
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:show];
+}
 
 - (void)startRequest {
     

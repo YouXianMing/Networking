@@ -74,6 +74,13 @@ typedef enum : NSUInteger {
 @interface Networking : NSObject
 
 /**
+ *  是否显示网络提示(左上角旋转的Indicator,默认为显示)
+ *
+ *  @param show
+ */
++ (void)showNetworkActivityIndicator:(BOOL)show;
+
+/**
  *  代理
  */
 @property (nonatomic, weak)  id <NetworkingDelegate>  delegate;
