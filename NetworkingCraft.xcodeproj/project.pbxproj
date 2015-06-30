@@ -37,6 +37,10 @@
 		10E234311B291E2E00AF2243 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E234301B291E2E00AF2243 /* Networking.m */; };
 		10E234391B29678700AF2243 /* WeatherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E234381B29678700AF2243 /* WeatherModel.m */; };
 		10E2343C1B2967C300AF2243 /* WeatherNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E2343B1B2967C300AF2243 /* WeatherNetwork.m */; };
+		10FD11281B4265A000E669D8 /* GCDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 10FD11211B4265A000E669D8 /* GCDGroup.m */; };
+		10FD11291B4265A000E669D8 /* GCDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 10FD11231B4265A000E669D8 /* GCDQueue.m */; };
+		10FD112A1B4265A000E669D8 /* GCDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 10FD11251B4265A000E669D8 /* GCDSemaphore.m */; };
+		10FD112B1B4265A000E669D8 /* GCDTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 10FD11271B4265A000E669D8 /* GCDTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +114,15 @@
 		10E234381B29678700AF2243 /* WeatherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherModel.m; sourceTree = "<group>"; };
 		10E2343A1B2967C300AF2243 /* WeatherNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherNetwork.h; sourceTree = "<group>"; };
 		10E2343B1B2967C300AF2243 /* WeatherNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherNetwork.m; sourceTree = "<group>"; };
+		10FD111F1B4265A000E669D8 /* GCD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCD.h; sourceTree = "<group>"; };
+		10FD11201B4265A000E669D8 /* GCDGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDGroup.h; sourceTree = "<group>"; };
+		10FD11211B4265A000E669D8 /* GCDGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDGroup.m; sourceTree = "<group>"; };
+		10FD11221B4265A000E669D8 /* GCDQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDQueue.h; sourceTree = "<group>"; };
+		10FD11231B4265A000E669D8 /* GCDQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDQueue.m; sourceTree = "<group>"; };
+		10FD11241B4265A000E669D8 /* GCDSemaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDSemaphore.h; sourceTree = "<group>"; };
+		10FD11251B4265A000E669D8 /* GCDSemaphore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSemaphore.m; sourceTree = "<group>"; };
+		10FD11261B4265A000E669D8 /* GCDTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDTimer.h; sourceTree = "<group>"; };
+		10FD11271B4265A000E669D8 /* GCDTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +179,7 @@
 				10E233DB1B291D7300AF2243 /* Main.storyboard */,
 				10E233DE1B291D7300AF2243 /* Images.xcassets */,
 				10E233E01B291D7300AF2243 /* LaunchScreen.xib */,
+				10FD111E1B42658F00E669D8 /* GCD */,
 				10E233D11B291D7300AF2243 /* Supporting Files */,
 			);
 			path = NetworkingCraft;
@@ -258,6 +272,22 @@
 				10D893C41B3A139500C9BD8A /* AFDownloadRequestOperation.m */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		10FD111E1B42658F00E669D8 /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				10FD111F1B4265A000E669D8 /* GCD.h */,
+				10FD11201B4265A000E669D8 /* GCDGroup.h */,
+				10FD11211B4265A000E669D8 /* GCDGroup.m */,
+				10FD11221B4265A000E669D8 /* GCDQueue.h */,
+				10FD11231B4265A000E669D8 /* GCDQueue.m */,
+				10FD11241B4265A000E669D8 /* GCDSemaphore.h */,
+				10FD11251B4265A000E669D8 /* GCDSemaphore.m */,
+				10FD11261B4265A000E669D8 /* GCDTimer.h */,
+				10FD11271B4265A000E669D8 /* GCDTimer.m */,
+			);
+			name = GCD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,14 +398,17 @@
 				10C720CC1B2A30B4003FA2A1 /* DownloadTask.m in Sources */,
 				10E2341E1B291DF300AF2243 /* AFHTTPRequestOperationManager.m in Sources */,
 				10E2343C1B2967C300AF2243 /* WeatherNetwork.m in Sources */,
+				10FD112A1B4265A000E669D8 /* GCDSemaphore.m in Sources */,
 				10E2342B1B291DF300AF2243 /* UIProgressView+AFNetworking.m in Sources */,
 				10E234201B291DF300AF2243 /* AFNetworkReachabilityManager.m in Sources */,
 				10E234241B291DF300AF2243 /* AFURLResponseSerialization.m in Sources */,
+				10FD11281B4265A000E669D8 /* GCDGroup.m in Sources */,
 				10E234221B291DF300AF2243 /* AFURLConnectionOperation.m in Sources */,
 				10E234291B291DF300AF2243 /* UIButton+AFNetworking.m in Sources */,
 				10E234271B291DF300AF2243 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				10E234211B291DF300AF2243 /* AFSecurityPolicy.m in Sources */,
 				10E2342C1B291DF300AF2243 /* UIRefreshControl+AFNetworking.m in Sources */,
+				10FD112B1B4265A000E669D8 /* GCDTimer.m in Sources */,
 				10E2342D1B291DF300AF2243 /* UIWebView+AFNetworking.m in Sources */,
 				10D893C51B3A139500C9BD8A /* AFDownloadRequestOperation.m in Sources */,
 				10E2341F1B291DF300AF2243 /* AFHTTPSessionManager.m in Sources */,
@@ -385,6 +418,7 @@
 				10E234311B291E2E00AF2243 /* Networking.m in Sources */,
 				10E234251B291DF300AF2243 /* AFURLSessionManager.m in Sources */,
 				10E233D71B291D7300AF2243 /* AppDelegate.m in Sources */,
+				10FD11291B4265A000E669D8 /* GCDQueue.m in Sources */,
 				10E233D41B291D7300AF2243 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
