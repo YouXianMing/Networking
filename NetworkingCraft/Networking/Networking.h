@@ -149,12 +149,17 @@ typedef enum : NSUInteger {
 /**
  *  代理
  */
-@property (nonatomic, weak)  id <NetworkingDelegate>  delegate;
+@property (nonatomic, weak)   id <NetworkingDelegate> delegate;
+
+/**
+ *  是否正在处于请求当中(可以用这个值来判断一个请求是否处于执行状态当中)
+ */
+@property (nonatomic, readonly)  BOOL                 isRunning;
 
 /**
  *  标识符
  */
-@property (nonatomic, strong) NSString               *flag;
+@property (nonatomic, strong)    NSString            *flag;
 
 /**
  *  超时时间间隔(设置了才能生效,不设置,使用的是AFNetworking自身的超时时间间隔)

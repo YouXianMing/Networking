@@ -30,6 +30,8 @@ static BOOL                           _canSendMessage      = YES;
 @property (nonatomic, strong) AFHTTPRequestOperation        *httpOperation;
 @property (nonatomic)         ECancelType                    cancelType;
 
+@property (nonatomic)         BOOL                           isRunning;
+
 #pragma mark - Private Method
 
 /**
@@ -163,7 +165,9 @@ static BOOL                           _canSendMessage      = YES;
 }
 
 - (void)defaultConfig {
-    self.manager = [AFHTTPRequestOperationManager manager];
+    
+    self.manager   = [AFHTTPRequestOperationManager manager];
+    self.isRunning = NO;
 }
 
 + (void)showNetworkActivityIndicator:(BOOL)show {
@@ -175,6 +179,9 @@ static BOOL                           _canSendMessage      = YES;
     if (self.urlString.length <= 0) {
         return;
     }
+    
+    // 进入了请求状态
+    _isRunning = YES;
     
     // 设置请求类型
     if (self.requestType) {
@@ -221,12 +228,16 @@ static BOOL                           _canSendMessage      = YES;
                                     parameters:[weakSelf transformRequestDictionary]
                                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                            
+                                           weakSelf.isRunning = NO;
+                                           
                                            if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
                                                [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
                                            }
                                            
                                        }
                                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                           
+                                           weakSelf.isRunning = NO;
                                            
                                            if (self.cancelType == USER_CANCEL) {
                                                if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
@@ -248,12 +259,16 @@ static BOOL                           _canSendMessage      = YES;
                                      parameters:[weakSelf transformRequestDictionary]
                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                             
+                                            weakSelf.isRunning = NO;
+                                            
                                             if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
                                                 [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
                                             }
                                             
                                         }
                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                            
+                                            weakSelf.isRunning = NO;
                                             
                                             if (self.cancelType == USER_CANCEL) {
                                                 if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
@@ -281,12 +296,16 @@ static BOOL                           _canSendMessage      = YES;
                           }
                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                 
+                                                weakSelf.isRunning = NO;
+                                                
                                                 if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
                                                     [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
                                                 }
                                                 
                                             }
                                             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                
+                                                weakSelf.isRunning = NO;
                                                 
                                                 if (self.cancelType == USER_CANCEL) {
                                                     if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
@@ -308,12 +327,16 @@ static BOOL                           _canSendMessage      = YES;
                           constructingBodyWithBlock:nil
                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                 
+                                                weakSelf.isRunning = NO;
+                                                
                                                 if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSucess:data:)]) {
                                                     [weakSelf.delegate requestSucess:weakSelf data:[weakSelf transformRequestData:responseObject]];
                                                 }
                                                 
                                             }
                                             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                
+                                                weakSelf.isRunning = NO;
                                                 
                                                 if (self.cancelType == USER_CANCEL) {
                                                     if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(userCanceledFailed:error:)]) {
